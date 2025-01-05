@@ -1,10 +1,8 @@
-import numpy as np
-import numpy.typing as npt
 
 # Resources:
 # https://www.pinecone.io/learn/offline-evaluation/
 
-def recall(actual: npt.NDArray, predicted: npt.NDArray, k: int) -> float:
+def recall(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Calculate the recall@k metric.
 
@@ -14,8 +12,8 @@ def recall(actual: npt.NDArray, predicted: npt.NDArray, k: int) -> float:
   Recall =  Total number of documents retrieved that are relevant/Total number of relevant documents in the database.
 
   Parameters:
-    actual (npt.NDArray): An array of ground truth relevant items.
-    predicted (npt.NDArray): An array of predicted items, ordered by relevance.
+    actual (list[int]): An array of ground truth relevant items.
+    predicted (list[int]): An array of predicted items, ordered by relevance.
     k (int): The number of top predictions to consider.
 
   Returns:
@@ -23,11 +21,11 @@ def recall(actual: npt.NDArray, predicted: npt.NDArray, k: int) -> float:
            A value of 1 indicates perfect recall, while 0 indicates no relevant documents retrieved.
 
   Example:
-    >>> actual = np.array([1, 2, 3, 4])
-    >>> predicted = np.array([4, 2, 6, 1, 7])
+    >>> actual = [1, 2, 3, 4]
+    >>> predicted = [4, 2, 6, 1, 7]
     >>> k = 3
     >>> recall(actual, predicted, k)
-    0.5  # (2 relevant documents retrieved out of 4)
+    0.5  # (2 relevant documents retrieved out of 4 total in dataset)
 
   Notes:
     - This function assumes the `predicted` array is sorted in descending order of relevance.
@@ -38,7 +36,7 @@ def recall(actual: npt.NDArray, predicted: npt.NDArray, k: int) -> float:
   count_relevant_in_top_k = len(actual_set.intersection(top_k_predictions))
   return count_relevant_in_top_k / float(len(actual_set))
 
-def precision(actual: npt.NDArray, predicted: npt.NDArray, k: int) -> float:
+def precision(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Calculate the precision@k metric.
 
@@ -48,8 +46,8 @@ def precision(actual: npt.NDArray, predicted: npt.NDArray, k: int) -> float:
   Precision =  Total number of documents retrieved that are relevant/Total number of documents that are retrieved.
 
   Parameters:
-    actual (npt.NDArray): An array of ground truth relevant items.
-    predicted (npt.NDArray): An array of predicted items, ordered by relevance.
+    actual (list[int]): An array of ground truth relevant items.
+    predicted (list[int]): An array of predicted items, ordered by relevance.
     k (int): The number of top predictions to consider.
 
   Returns:
@@ -57,11 +55,11 @@ def precision(actual: npt.NDArray, predicted: npt.NDArray, k: int) -> float:
            A value of 1 indicates perfect precision, while 0 indicates no relevant documents retrieved.
 
   Example:
-    >>> actual = np.array([1, 2, 3, 4])
-    >>> predicted = np.array([4, 2, 6, 1, 7])
+    >>> actual = [1, 2, 3, 4]
+    >>> predicted = [4, 2, 6, 1, 7]
     >>> k = 3
     >>> precision(actual, predicted, k)
-    0.5  # (2 relevant documents retrieved out of 4)
+    0.66  # (2 relevant documents retrieved out of 3 returned)
 
   Notes:
     - This function assumes the `predicted` array is sorted in descending order of relevance.
