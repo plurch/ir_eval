@@ -69,3 +69,37 @@ def precision(actual: list[int], predicted: list[int], k: int) -> float:
   top_k_predictions = set(predicted[:k])
   count_relevant_in_top_k = len(actual_set.intersection(top_k_predictions))
   return count_relevant_in_top_k / float(k)
+
+
+def average_precision(actual: list[int], predicted: list[int], k: int) -> float:
+  """
+  Computes the Average Precision (AP) at a specified rank `k`.
+
+  Average Precision (AP) is a metric used to evaluate the relevance of predicted rankings 
+  in information retrieval tasks. It is calculated as the mean of precision values at 
+  each rank where a relevant document is retrieved within the top `k` predictions.
+
+  Args:
+      actual (list[int]): A list of integers representing the ground truth relevant items.
+      predicted (list[int]): A list of integers representing the predicted rankings of items.
+      k (int): The maximum number of top-ranked items to consider for evaluation.
+
+  Returns:
+      float: The Average Precision score. If no relevant items are retrieved within the
+      top `k` predictions, the function may raise a division by zero error or return `NaN`.
+
+  Example:
+      >>> actual = [1, 2, 3]
+      >>> predicted = [1, 4, 2, 3]
+      >>> k = 3
+      >>> average_precision(actual, predicted, k)
+      0.7777777777777778  # Example AP score.
+  """
+  actual_set = set(actual)
+  precision_list = []
+
+  for i in range(k):
+    if (predicted[i] in actual_set):
+      precision_list.append(precision(actual, predicted, i+1))
+
+  return sum(precision_list) / len(precision_list)

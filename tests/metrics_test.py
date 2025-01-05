@@ -1,5 +1,5 @@
 import pytest
-from ir_eval.metrics import recall, precision
+from ir_eval.metrics import recall, precision, average_precision
 
 # Sample data generated with:
 # total_count_items = 100
@@ -10,6 +10,7 @@ from ir_eval.metrics import recall, precision
 actual = [ 4, 79, 32, 45, 14, 46, 53, 15,  3, 54, 68, 99, 75, 82, 35, 27, 73,
     20, 25, 66, 11, 58, 31,  8, 85]
 predicted = [1, 2, 62, 84, 3, 4, 81, 14, 5, 67]
+# intersection: {3, 4, 14}
 
 class TestRecall:
   def test_recall_k_5(self):
@@ -28,3 +29,17 @@ class TestPrecision:
   def test_precision_k_10(self):
     result = precision(actual, predicted, 10)
     assert result == pytest.approx(0.3) # 3 out of 10
+
+class TestAveragePrecision:
+  def test_average_precision_basic(self):
+    # basic inputs
+    result = average_precision([1,3,5], [1,2,3,4,5], 5)
+    assert result == pytest.approx(0.7555555555555555) # (1 + 0.67 + 0.6) / 3 = 0.75555
+
+  def test_precision_k_5(self):
+    result = average_precision(actual, predicted, 5)
+    assert result == pytest.approx(0.2)
+
+  def test_precision_k_10(self):
+    result = average_precision(actual, predicted, 10)
+    assert result == pytest.approx(0.30277777777777776)
