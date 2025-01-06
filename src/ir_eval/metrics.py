@@ -1,6 +1,7 @@
 
 # Resources:
 # https://www.pinecone.io/learn/offline-evaluation/
+# https://spotintelligence.com/2023/09/07/mean-average-precision/#Average_Precision_AP
 
 def recall(actual: list[int], predicted: list[int], k: int) -> float:
   """
@@ -103,3 +104,37 @@ def average_precision(actual: list[int], predicted: list[int], k: int) -> float:
       precision_list.append(precision(actual, predicted, i+1))
 
   return sum(precision_list) / len(precision_list)
+
+def mean_average_precision(actual_list: list[list[int]], predicted_list: list[list[int]], k: int) -> float:
+  """
+  Computes the Mean Average Precision (MAP) at a specified rank `k`.
+
+  It is the mean of the Average Precision (AP) scores computed for multiple 
+  queries
+
+  Args:
+      actual_list (list[list[int]]): A list of lists where each inner list represents 
+          the ground truth relevant items for a query
+      predicted_list (list[list[int]]): A list of lists where each inner list represents 
+          the predicted rankings of items for a query
+      k (int): The maximum number of top-ranked items to consider for each prediction.
+
+  Returns:
+      float: The Mean Average Precision score, which is the mean of AP scores across all 
+      queries.
+
+  Raises:
+      AssertionError: If the lengths of `actual_list` and `predicted_list` are not equal.
+
+  Example:
+      >>> actual_list = [[1, 2, 3], [2, 3, 4]]
+      >>> predicted_list = [[1, 4, 2, 3], [2, 3, 5, 4]]
+      >>> k = 3
+      >>> mean_average_precision(actual_list, predicted_list, k)
+      0.7916666666666666  # Example MAP score.
+  """
+
+  assert len(actual_list) == len(predicted_list)
+
+  ap_values = [average_precision(actual_list[i], predicted_list[i], k) for i in range(len(actual_list))]
+  return sum(ap_values) / len(ap_values)

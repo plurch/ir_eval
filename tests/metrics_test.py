@@ -1,5 +1,5 @@
 import pytest
-from ir_eval.metrics import recall, precision, average_precision
+from ir_eval.metrics import recall, precision, average_precision, mean_average_precision
 
 # Sample data generated with:
 # total_count_items = 100
@@ -43,3 +43,30 @@ class TestAveragePrecision:
   def test_precision_k_10(self):
     result = average_precision(actual, predicted, 10)
     assert result == pytest.approx(0.30277777777777776)
+
+class TestMeanAveragePrecision:
+  def test_mean_average_precision_basic(self):
+    # basic inputs
+    actual_list = [
+      [1,3,5],
+      [2,4,6],
+      [7,8,9]
+    ]
+
+    predicted_list = [
+      [1,2,3,4,5],
+      [9,2,3,1,5],
+      [4,5,9,8,3]
+    ]
+    result = mean_average_precision(actual_list, predicted_list, 5)
+    # ap values: [0.7555555555555555, 0.5, 0.41666666666666663]
+    assert result == pytest.approx(0.5574074074074074)
+
+  def test_mean_average_precision_pydoc(self):
+    # inputs from pydoc string
+    actual_list = [[1, 2, 3], [2, 3, 4]]
+
+    predicted_list = [[1, 4, 2, 3], [2, 3, 5, 4]]
+    result = mean_average_precision(actual_list, predicted_list, 3)
+    # ap values: [0.8333333333333333, 1.0]
+    assert result == pytest.approx(0.9166666666666666)
