@@ -1,5 +1,5 @@
 import pytest
-from ir_eval.metrics import recall, precision, average_precision, mean_average_precision, ndcg
+from ir_eval.metrics import recall, precision, average_precision, mean_average_precision, ndcg, reciprocal_rank
 
 # Sample data generated with:
 # total_count_items = 100
@@ -79,3 +79,12 @@ class TestNCDG:
   def test_ndcg_k_10(self):
     result = ndcg(actual, predicted, 10)
     assert result == pytest.approx(0.23297260855707355)
+
+class TestReciprocalRank:
+  def test_reciprocal_rank_k_10(self):
+    result = reciprocal_rank(actual, predicted, 10)
+    assert result == pytest.approx(0.2) # found at position 5
+  
+  def test_reciprocal_rank_zero(self):
+    result = ndcg([1,2,3], [4,5,6,7,8], 5)
+    assert result == pytest.approx(0) # no relevant items found

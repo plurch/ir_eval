@@ -2,7 +2,8 @@ import math
 
 # Resources:
 # https://www.pinecone.io/learn/offline-evaluation/
-# https://spotintelligence.com/2023/09/07/mean-average-precision/#Average_Precision_AP
+# https://spotintelligence.com/2023/09/07/mean-average-precision/
+# https://spotintelligence.com/2024/08/02/mean-reciprocal-rank-mrr/
 
 def recall(actual: list[int], predicted: list[int], k: int) -> float:
   """
@@ -138,3 +139,34 @@ def ndcg(actual: list[int], predicted: list[int], k: int) -> float:
   # ideal discounted cumulative gain (ie. perfect results returned)
   idcg = sum([1.0/math.log2(i+2) for i in range(min(k, len(actual_set)))])
   return dcg / idcg
+
+
+def reciprocal_rank(actual: list[int], predicted: list[int], k: int) -> float:
+  """
+  Computes the Reciprocal Rank (RR) at a specified rank `k`.
+
+  It assigns a score based on the reciprocal of the rank at which the first relevant item is found.
+
+  Args:
+      actual (list[int]): A list of integers representing the ground truth relevant items.
+      predicted (list[int]): A list of integers representing the predicted rankings of items.
+      k (int): The maximum number of top-ranked items to consider for evaluation.
+
+  Returns:
+      float: The Reciprocal Rank score. A value of 0 is returned if no relevant items are 
+      found within the top `k` predictions. Otherwise, the score is `1 / rank`, where 
+      `rank` is the position (1-based) of the first relevant item.
+
+  Notes:
+      - The function assumes zero-based indexing for the `predicted` list.
+      - If `k` exceeds the length of `predicted`, only the available elements in `predicted` 
+        are considered.
+      - This metric focuses only on the rank of the first relevant item, ignoring others.
+  """
+  actual_set = set(actual)
+
+  for i in range(k):
+    if predicted[i] in actual_set:
+      return 1 / float(i + 1)
+  
+  return float(0)
