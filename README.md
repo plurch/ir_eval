@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-`ir_eval` - Information retrieval evaluation in pure python with zero dependencies
+`ir_eval` - Information retrieval evaluation metrics in pure python with zero dependencies
 
 This project provides simple and tested python implementations of information retrieval metrics without any library dependencies (not even numpy!). The source code is clear and easy to understand. All functions have pydoc help strings.
 
