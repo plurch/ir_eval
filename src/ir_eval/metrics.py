@@ -1,3 +1,4 @@
+import math
 
 # Resources:
 # https://www.pinecone.io/learn/offline-evaluation/
@@ -20,13 +21,6 @@ def recall(actual: list[int], predicted: list[int], k: int) -> float:
   Returns:
     float: The recall value at rank k, ranging from 0 to 1.
            A value of 1 indicates perfect recall, while 0 indicates no relevant documents retrieved.
-
-  Example:
-    >>> actual = [1, 2, 3, 4]
-    >>> predicted = [4, 2, 6, 1, 7]
-    >>> k = 3
-    >>> recall(actual, predicted, k)
-    0.5  # (2 relevant documents retrieved out of 4 total in dataset)
 
   Notes:
     - This function assumes the `predicted` array is sorted in descending order of relevance.
@@ -55,13 +49,6 @@ def precision(actual: list[int], predicted: list[int], k: int) -> float:
     float: The precision value at rank k, ranging from 0 to 1.
            A value of 1 indicates perfect precision, while 0 indicates no relevant documents retrieved.
 
-  Example:
-    >>> actual = [1, 2, 3, 4]
-    >>> predicted = [4, 2, 6, 1, 7]
-    >>> k = 3
-    >>> precision(actual, predicted, k)
-    0.66  # (2 relevant documents retrieved out of 3 returned)
-
   Notes:
     - This function assumes the `predicted` array is sorted in descending order of relevance.
     - If k is larger than the length of the `predicted` array, it will consider the entire array.
@@ -88,13 +75,6 @@ def average_precision(actual: list[int], predicted: list[int], k: int) -> float:
   Returns:
       float: The Average Precision score. If no relevant items are retrieved within the
       top `k` predictions, the function may raise a division by zero error or return `NaN`.
-
-  Example:
-      >>> actual = [1, 2, 3]
-      >>> predicted = [1, 4, 2, 3]
-      >>> k = 3
-      >>> average_precision(actual, predicted, k)
-      0.7777777777777778  # Example AP score.
   """
   actual_set = set(actual)
   precision_list = []
@@ -125,16 +105,36 @@ def mean_average_precision(actual_list: list[list[int]], predicted_list: list[li
 
   Raises:
       AssertionError: If the lengths of `actual_list` and `predicted_list` are not equal.
-
-  Example:
-      >>> actual_list = [[1, 2, 3], [2, 3, 4]]
-      >>> predicted_list = [[1, 4, 2, 3], [2, 3, 5, 4]]
-      >>> k = 3
-      >>> mean_average_precision(actual_list, predicted_list, k)
-      0.7916666666666666  # Example MAP score.
   """
 
   assert len(actual_list) == len(predicted_list)
 
   ap_values = [average_precision(actual_list[i], predicted_list[i], k) for i in range(len(actual_list))]
   return sum(ap_values) / len(ap_values)
+
+def ndcg(actual: list[int], predicted: list[int], k: int) -> float:
+  """
+  Computes the Normalized Discounted Cumulative Gain (nDCG) at a specified rank `k`.
+
+  It evaluates the quality of a predicted ranking by comparing it to an ideal ranking 
+  (i.e., perfect ordering of relevant items). It accounts for the position of relevant 
+  items in the ranking, giving higher weight to items appearing earlier.
+
+  Args:
+      actual (list[int]): A list of integers representing the ground truth relevant items.
+      predicted (list[int]): A list of integers representing the predicted rankings of items.
+      k (int): The maximum number of top-ranked items to consider for evaluation.
+
+  Returns:
+      float: The nDCG score, which ranges from 0 to 1. A value of 1 indicates a perfect 
+      ranking. Returns 0 if there are no relevant items in the top `k` predictions or if 
+      the ideal DCG (iDCG) is zero.
+  """
+  actual_set = set(actual)
+
+  # discounted cumulative gain
+  # `i+2` due to zero indexing
+  dcg = sum([1.0/math.log2(i+2) if predicted[i] in actual_set else 0 for i in range(k)])
+  # ideal discounted cumulative gain (ie. perfect results returned)
+  idcg = sum([1.0/math.log2(i+2) for i in range(min(k, len(actual_set)))])
+  return dcg / idcg

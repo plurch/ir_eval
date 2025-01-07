@@ -1,5 +1,5 @@
 import pytest
-from ir_eval.metrics import recall, precision, average_precision, mean_average_precision
+from ir_eval.metrics import recall, precision, average_precision, mean_average_precision, ndcg
 
 # Sample data generated with:
 # total_count_items = 100
@@ -70,3 +70,12 @@ class TestMeanAveragePrecision:
     result = mean_average_precision(actual_list, predicted_list, 3)
     # ap values: [0.8333333333333333, 1.0]
     assert result == pytest.approx(0.9166666666666666)
+
+class TestNCDG:
+  def test_ndcg_k_5(self):
+    result = ndcg(actual, predicted, 5)
+    assert result == pytest.approx(0.13120507751234178)
+  
+  def test_ndcg_k_10(self):
+    result = ndcg(actual, predicted, 10)
+    assert result == pytest.approx(0.23297260855707355)
