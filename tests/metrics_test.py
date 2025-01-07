@@ -1,5 +1,13 @@
 import pytest
-from ir_eval.metrics import recall, precision, average_precision, mean_average_precision, ndcg, reciprocal_rank
+from ir_eval.metrics import (
+    recall,
+    precision,
+    average_precision,
+    mean_average_precision,
+    ndcg,
+    reciprocal_rank,
+    mean_reciprocal_rank,
+)
 
 # Sample data generated with:
 # total_count_items = 100
@@ -88,3 +96,24 @@ class TestReciprocalRank:
   def test_reciprocal_rank_zero(self):
     result = ndcg([1,2,3], [4,5,6,7,8], 5)
     assert result == pytest.approx(0) # no relevant items found
+
+class TestMeanReciprocalRank:
+  def test_mean_reciprocal_rank_basic(self):
+    # basic inputs
+    actual_list = [
+      [1,3,5],
+      [2,4,6],
+      [7,8,9],
+      [7,8,9]
+    ]
+
+    predicted_list = [
+      [1,2,3,4,5],
+      [9,2,3,1,5],
+      [4,5,9,8,3],
+      [1,2,3,4,5]
+    ]
+    result = mean_reciprocal_rank(actual_list, predicted_list, 5)
+    # rr values: [1.0, 0.5, 0.333, 0]
+    assert result == pytest.approx(0.4583333333333333)
+  

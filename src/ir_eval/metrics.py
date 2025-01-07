@@ -140,7 +140,6 @@ def ndcg(actual: list[int], predicted: list[int], k: int) -> float:
   idcg = sum([1.0/math.log2(i+2) for i in range(min(k, len(actual_set)))])
   return dcg / idcg
 
-
 def reciprocal_rank(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Computes the Reciprocal Rank (RR) at a specified rank `k`.
@@ -170,3 +169,29 @@ def reciprocal_rank(actual: list[int], predicted: list[int], k: int) -> float:
       return 1 / float(i + 1)
   
   return float(0)
+
+def mean_reciprocal_rank(actual_list: list[list[int]], predicted_list: list[list[int]], k: int) -> float:
+  """
+  Computes the Mean Reciprocal Rank (MRR) at a specified rank `k`.
+
+  It calculates the mean of the Reciprocal Rank (RR) scores for a set of queries.
+
+  Args:
+      actual_list (list[list[int]]): A list of lists where each inner list represents the 
+          ground truth relevant items for a query or task.
+      predicted_list (list[list[int]]): A list of lists where each inner list represents 
+          the predicted rankings of items for a query or task.
+      k (int): The maximum number of top-ranked items to consider for each prediction.
+
+  Returns:
+      float: The Mean Reciprocal Rank score, which is the average of RR scores across all 
+      queries. Returns 0 if there are no queries or no relevant items in any predictions.
+
+  Raises:
+      AssertionError: If the lengths of `actual_list` and `predicted_list` are not equal.
+  """
+
+  assert len(actual_list) == len(predicted_list)
+
+  rr_values = [reciprocal_rank(actual_list[i], predicted_list[i], k) for i in range(len(actual_list))]
+  return sum(rr_values) / len(rr_values)
