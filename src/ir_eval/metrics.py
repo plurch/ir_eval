@@ -1,18 +1,13 @@
 import math
 
-# Resources:
-# https://www.pinecone.io/learn/offline-evaluation/
-# https://spotintelligence.com/2023/09/07/mean-average-precision/
-# https://spotintelligence.com/2024/08/02/mean-reciprocal-rank-mrr/
-
 def recall(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Calculate the recall@k metric.
 
-  Recall is defined as the ratio of the total number of relevant documents retrieved
-  within the top-k predictions to the total number of relevant documents in the database.
+  Recall is defined as the ratio of the total number of relevant items retrieved
+  within the top-k predictions to the total number of relevant items in the entire database.
 
-  Recall =  Total number of documents retrieved that are relevant/Total number of relevant documents in the database.
+  Recall =  Total number of items retrieved that are relevant/Total number of relevant items in the database.
 
   Parameters:
     actual (list[int]): An array of ground truth relevant items.
@@ -21,7 +16,7 @@ def recall(actual: list[int], predicted: list[int], k: int) -> float:
 
   Returns:
     float: The recall value at rank k, ranging from 0 to 1.
-           A value of 1 indicates perfect recall, while 0 indicates no relevant documents retrieved.
+           A value of 1 indicates perfect recall, while 0 indicates no relevant items retrieved.
 
   Notes:
     - This function assumes the `predicted` array is sorted in descending order of relevance.
@@ -36,10 +31,10 @@ def precision(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Calculate the precision@k metric.
 
-  Precision is defined as the ratio of the total number of relevant documents retrieved
-  within the top-k predictions to the total number of returned documents (k).
+  Precision is defined as the ratio of the total number of relevant items retrieved
+  within the top-k predictions to the total number of returned items (k).
 
-  Precision =  Total number of documents retrieved that are relevant/Total number of documents that are retrieved.
+  Precision =  Total number of items retrieved that are relevant/Total number of items that are retrieved.
 
   Parameters:
     actual (list[int]): An array of ground truth relevant items.
@@ -48,7 +43,7 @@ def precision(actual: list[int], predicted: list[int], k: int) -> float:
 
   Returns:
     float: The precision value at rank k, ranging from 0 to 1.
-           A value of 1 indicates perfect precision, while 0 indicates no relevant documents retrieved.
+           A value of 1 indicates perfect precision, while 0 indicates no relevant items retrieved.
 
   Notes:
     - This function assumes the `predicted` array is sorted in descending order of relevance.
@@ -66,7 +61,7 @@ def average_precision(actual: list[int], predicted: list[int], k: int) -> float:
 
   Average Precision (AP) is a metric used to evaluate the relevance of predicted rankings 
   in information retrieval tasks. It is calculated as the mean of precision values at 
-  each rank where a relevant document is retrieved within the top `k` predictions.
+  each rank where a relevant item is retrieved within the top `k` predictions.
 
   Args:
       actual (list[int]): A list of integers representing the ground truth relevant items.
@@ -91,7 +86,7 @@ def mean_average_precision(actual_list: list[list[int]], predicted_list: list[li
   Computes the Mean Average Precision (MAP) at a specified rank `k`.
 
   It is the mean of the Average Precision (AP) scores computed for multiple 
-  queries
+  queries.
 
   Args:
       actual_list (list[list[int]]): A list of lists where each inner list represents 
@@ -117,7 +112,7 @@ def ndcg(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Computes the Normalized Discounted Cumulative Gain (nDCG) at a specified rank `k`.
 
-  It evaluates the quality of a predicted ranking by comparing it to an ideal ranking 
+  nDCG evaluates the quality of a predicted ranking by comparing it to an ideal ranking 
   (i.e., perfect ordering of relevant items). It accounts for the position of relevant 
   items in the ranking, giving higher weight to items appearing earlier.
 
@@ -144,7 +139,7 @@ def reciprocal_rank(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Computes the Reciprocal Rank (RR) at a specified rank `k`.
 
-  It assigns a score based on the reciprocal of the rank at which the first relevant item is found.
+  Reciprocal Rank (RR) assigns a score based on the reciprocal of the rank at which the first relevant item is found.
 
   Args:
       actual (list[int]): A list of integers representing the ground truth relevant items.
