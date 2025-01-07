@@ -7,9 +7,7 @@ authors = [
     { name = "Patrick Lurch", email = "plurch@users.noreply.github.com" }
 ]
 requires-python = ">=3.12"
-dependencies = [
-    "numpy>=2.2.1",
-]
+dependencies = []
 
 [build-system]
 requires = ["hatchling"]
