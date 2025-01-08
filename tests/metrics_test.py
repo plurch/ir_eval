@@ -1,5 +1,5 @@
 import pytest
-from ir_eval.metrics import (
+from ir_evaluation.metrics import (
     recall,
     precision,
     average_precision,
