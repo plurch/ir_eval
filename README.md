@@ -127,3 +127,5 @@ from ir_evaluation.metrics import mean_reciprocal_rank
 [Spot Intelligence - Mean Average Precision](https://spotintelligence.com/2023/09/07/mean-average-precision/)
 
 [Spot Intelligence - Mean Reciprocal Rank](https://spotintelligence.com/2024/08/02/mean-reciprocal-rank-mrr/)
+
+[google-research/ials](https://github.com/google-research/google-research/blob/943fffe2522da9e58667fb129eda84bd6c088035/ials/ncf_benchmarks/ials.py#L83)
