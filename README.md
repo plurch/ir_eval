@@ -1,5 +1,6 @@
 # Information Retrieval Evaluation
 
+[![Actions status](https://github.com/plurch/ir_eval/actions/workflows/ci-tests.yml/badge.svg)](https://github.com/plurch/ir_eval/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 `ir_eval` - Information retrieval evaluation metrics in pure python with zero dependencies
