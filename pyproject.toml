@@ -9,6 +9,10 @@ authors = [
 requires-python = ">=3.11"
 dependencies = []
 
+[tool.ir_evaluation.metadata]
+license = "MIT"
+url = "https://github.com/plurch/ir_evaluation"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
