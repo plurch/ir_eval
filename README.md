@@ -4,9 +4,7 @@
 [![Actions status](https://github.com/plurch/ir_evaluation/actions/workflows/ci-tests.yml/badge.svg)](https://github.com/plurch/ir_evaluation/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/plurch/ir_evaluation/blob/main/LICENSE)
 
-`ir_evaluation` - Information retrieval evaluation metrics in pure python with zero dependencies
-
-This project provides simple and tested python implementations of popular information retrieval metrics without any library dependencies (not even numpy!). The source code is clear and easy to understand. All functions have pydoc help strings.
+This project provides simple and tested pure python implementations of popular information retrieval metrics without any library dependencies (not even numpy!). The source code is clear and easy to understand. All functions have pydoc help strings.
 
 The metrics can be used to determine the quality of rankings that are returned by a retrieval or recommender system.
 
@@ -55,13 +53,17 @@ uv run pytest
 
 Recall is defined as the ratio of the total number of relevant items retrieved within the top-k predictions to the total number of relevant items in the entire database.
 
+Usage scenario: Prioritize returning all relevant items from database. Early retrieval stages where many candidates are returned should focus on this metric.
+
 ```
 from ir_evaluation.metrics import recall
 ```
 
 ### Precision
 
-Precision is defined as the ratio of the total number of relevant items retrieved  within the top-k predictions to the total number of returned items (k).
+Precision is defined as the ratio of the total number of relevant items retrieved within the top-k predictions to the total number of returned items (k).
+
+Usage scenario: Minimize false positives in predictions. Later ranking stages should focus on this metric.
 
 ```
 from ir_evaluation.metrics import precision
@@ -71,6 +73,8 @@ from ir_evaluation.metrics import precision
 
 Average Precision is calculated as the mean of precision values at  each rank where a relevant item is retrieved within the top `k` predictions.
 
+Usage scenario: Evaluates how well relevant items are ranked within the top-k returned list.
+
 ```
 from ir_evaluation.metrics import average_precision
 ```
@@ -78,6 +82,8 @@ from ir_evaluation.metrics import average_precision
 ### Mean Average Precision (MAP)
 
 MAP is the mean of the Average Precision (AP - see above) scores computed for multiple queries.
+
+Usage scenario: Reflects overall performance of AP for multiple queries. A good holistic metric that balances the tradeoff between recall and precision.
 
 ```
 from ir_evaluation.metrics import mean_average_precision
@@ -87,6 +93,8 @@ from ir_evaluation.metrics import mean_average_precision
 
 nDCG evaluates the quality of a predicted ranking by comparing it to an ideal ranking (i.e., perfect ordering of relevant items). It accounts for the position of relevant items in the ranking, giving higher weight to items appearing earlier.
 
+Usage scenario: Prioritize returning relevant items higher in the returned top-k list. A good holistic metric. 
+
 ```
 from ir_evaluation.metrics import ndcg
 ```
@@ -95,6 +103,8 @@ from ir_evaluation.metrics import ndcg
 
 Reciprocal Rank (RR) assigns a score based on the reciprocal of the rank at which the first relevant item is found.
 
+Usage scenario: Useful when the topmost recommendation holds siginificant value. Use this when users are presented with one or very few returned results.
+
 ```
 from ir_evaluation.metrics import reciprocal_rank
 ```
@@ -102,6 +112,8 @@ from ir_evaluation.metrics import reciprocal_rank
 ### Mean Reciprocal Rank (MRR)
 
 MRR calculates the mean of the Reciprocal Rank (RR) scores for a set of queries.
+
+Usage scenario: Reflects overall performance of RR for multiple queries.
 
 ```
 from ir_evaluation.metrics import mean_reciprocal_rank

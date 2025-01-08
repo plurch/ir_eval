@@ -7,12 +7,11 @@ def recall(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Calculate the recall@k metric.
 
-  Recall is defined as the ratio of the total number of relevant items retrieved
-  within the top-k predictions to the total number of relevant items in the entire database.
+  Recall is defined as the ratio of the total number of relevant items retrieved within the top-k predictions to the total number of relevant items in the entire database.
 
   Recall =  Total number of items retrieved that are relevant/Total number of relevant items in the database.
 
-  Parameters:
+  Args:
     actual (list[int]): An array of ground truth relevant items.
     predicted (list[int]): An array of predicted items, ordered by relevance.
     k (int): The number of top predictions to consider.
@@ -39,7 +38,7 @@ def precision(actual: list[int], predicted: list[int], k: int) -> float:
 
   Precision =  Total number of items retrieved that are relevant/Total number of items that are retrieved.
 
-  Parameters:
+  Args:
     actual (list[int]): An array of ground truth relevant items.
     predicted (list[int]): An array of predicted items, ordered by relevance.
     k (int): The number of top predictions to consider.
