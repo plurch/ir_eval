@@ -1,20 +1,21 @@
 # Information Retrieval Evaluation
 
-[![Actions status](https://github.com/plurch/ir_eval/actions/workflows/ci-tests.yml/badge.svg)](https://github.com/plurch/ir_eval/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![image](https://img.shields.io/pypi/v/ir_evaluation.svg)](https://pypi.python.org/pypi/ir_evaluation)
+[![Actions status](https://github.com/plurch/ir_evaluation/actions/workflows/ci-tests.yml/badge.svg)](https://github.com/plurch/ir_evaluation/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/plurch/ir_evaluation/blob/main/LICENSE)
 
-`ir_eval` - Information retrieval evaluation metrics in pure python with zero dependencies
+`ir_evaluation` - Information retrieval evaluation metrics in pure python with zero dependencies
 
-This project provides simple and tested python implementations of information retrieval metrics without any library dependencies (not even numpy!). The source code is clear and easy to understand. All functions have pydoc help strings.
+This project provides simple and tested python implementations of popular information retrieval metrics without any library dependencies (not even numpy!). The source code is clear and easy to understand. All functions have pydoc help strings.
 
 The metrics can be used to determine the quality of rankings that are returned by a retrieval or recommender system.
 
 ## Installation
 
-`ir_eval` can be installed from pypi with:
+`ir_evaluation` can be installed from pypi with:
 
 ```
-pip install ir_eval
+pip install ir_evaluation
 ```
 
 ## Usage
@@ -39,13 +40,21 @@ uv run pytest
 ```
 
 ## Metrics
+- [Recall](#recall)
+- [Precision](#precision)
+- [Average Precision (AP)](#average-precision-ap)
+- [Mean Average Precision (MAP)](#mean-average-precision-map)
+- [Normalized Discounted Cumulative Gain (nDCG)](#normalized-discounted-cumulative-gain-ndcg)
+- [Reciprocal Rank (RR)](#reciprocal-rank-rr)
+- [Mean Reciprocal Rank (MRR)](#mean-reciprocal-rank-mrr)
+
 
 ### Recall
 
 Recall is defined as the ratio of the total number of relevant items retrieved within the top-k predictions to the total number of relevant items in the entire database.
 
 ```
-from ir_eval.metrics import recall
+from ir_evaluation.metrics import recall
 ```
 
 ### Precision
@@ -53,7 +62,7 @@ from ir_eval.metrics import recall
 Precision is defined as the ratio of the total number of relevant items retrieved  within the top-k predictions to the total number of returned items (k).
 
 ```
-from ir_eval.metrics import precision
+from ir_evaluation.metrics import precision
 ```
 
 ### Average Precision (AP)
@@ -61,7 +70,7 @@ from ir_eval.metrics import precision
 Average Precision is calculated as the mean of precision values at  each rank where a relevant item is retrieved within the top `k` predictions.
 
 ```
-from ir_eval.metrics import average_precision
+from ir_evaluation.metrics import average_precision
 ```
 
 ### Mean Average Precision (MAP)
@@ -69,7 +78,7 @@ from ir_eval.metrics import average_precision
 MAP is the mean of the Average Precision (AP - see above) scores computed for multiple queries.
 
 ```
-from ir_eval.metrics import mean_average_precision
+from ir_evaluation.metrics import mean_average_precision
 ```
 
 ### Normalized Discounted Cumulative Gain (nDCG)
@@ -77,7 +86,7 @@ from ir_eval.metrics import mean_average_precision
 nDCG evaluates the quality of a predicted ranking by comparing it to an ideal ranking (i.e., perfect ordering of relevant items). It accounts for the position of relevant items in the ranking, giving higher weight to items appearing earlier.
 
 ```
-from ir_eval.metrics import ndcg
+from ir_evaluation.metrics import ndcg
 ```
 
 ### Reciprocal Rank (RR)
@@ -85,7 +94,7 @@ from ir_eval.metrics import ndcg
 Reciprocal Rank (RR) assigns a score based on the reciprocal of the rank at which the first relevant item is found.
 
 ```
-from ir_eval.metrics import reciprocal_rank
+from ir_evaluation.metrics import reciprocal_rank
 ```
 
 ### Mean Reciprocal Rank (MRR)
@@ -93,7 +102,7 @@ from ir_eval.metrics import reciprocal_rank
 MRR calculates the mean of the Reciprocal Rank (RR) scores for a set of queries.
 
 ```
-from ir_eval.metrics import mean_reciprocal_rank
+from ir_evaluation.metrics import mean_reciprocal_rank
 ```
 
 ## Online Resources
