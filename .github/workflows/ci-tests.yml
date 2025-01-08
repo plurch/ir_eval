@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         python-version:
+          - "3.11"
           - "3.12"
           - "3.13"
     steps:
@@ -31,6 +32,6 @@ jobs:
           
       - name: Install the project
         run: uv sync --all-extras --dev
-        
+
       - name: Run tests
         run: uv run pytest -rA
