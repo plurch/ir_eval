@@ -1,5 +1,8 @@
 import math
 
+def mean_of_list(l: list[float]) -> float:
+  return sum(l) / len(l)
+
 def recall(actual: list[int], predicted: list[int], k: int) -> float:
   """
   Calculate the recall@k metric.
@@ -73,13 +76,8 @@ def average_precision(actual: list[int], predicted: list[int], k: int) -> float:
       top `k` predictions, the function may raise a division by zero error or return `NaN`.
   """
   actual_set = set(actual)
-  precision_list = []
-
-  for i in range(k):
-    if (predicted[i] in actual_set):
-      precision_list.append(precision(actual, predicted, i+1))
-
-  return sum(precision_list) / len(precision_list)
+  precision_list = [precision(actual, predicted, i+1) for i in range(k) if predicted[i] in actual_set]
+  return mean_of_list(precision_list)
 
 def mean_average_precision(actual_list: list[list[int]], predicted_list: list[list[int]], k: int) -> float:
   """
@@ -106,7 +104,7 @@ def mean_average_precision(actual_list: list[list[int]], predicted_list: list[li
   assert len(actual_list) == len(predicted_list)
 
   ap_values = [average_precision(actual_list[i], predicted_list[i], k) for i in range(len(actual_list))]
-  return sum(ap_values) / len(ap_values)
+  return mean_of_list(ap_values) 
 
 def ndcg(actual: list[int], predicted: list[int], k: int) -> float:
   """
@@ -130,7 +128,7 @@ def ndcg(actual: list[int], predicted: list[int], k: int) -> float:
 
   # discounted cumulative gain
   # `i+2` due to zero indexing
-  dcg = sum([1.0/math.log2(i+2) if predicted[i] in actual_set else 0 for i in range(k)])
+  dcg = sum([1.0/math.log2(i+2) for i in range(k) if predicted[i] in actual_set])
   # ideal discounted cumulative gain (ie. perfect results returned)
   idcg = sum([1.0/math.log2(i+2) for i in range(min(k, len(actual_set)))])
   return dcg / idcg
@@ -189,4 +187,4 @@ def mean_reciprocal_rank(actual_list: list[list[int]], predicted_list: list[list
   assert len(actual_list) == len(predicted_list)
 
   rr_values = [reciprocal_rank(actual_list[i], predicted_list[i], k) for i in range(len(actual_list))]
-  return sum(rr_values) / len(rr_values)
+  return mean_of_list(rr_values)
