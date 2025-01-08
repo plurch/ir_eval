@@ -12,6 +12,8 @@ The metrics can be used to determine the quality of rankings that are returned b
 
 ## Installation
 
+Requires: Python >=3.11
+
 `ir_evaluation` can be installed from pypi with:
 
 ```
