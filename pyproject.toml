@@ -1,6 +1,6 @@
 [project]
 name = "ir_evaluation"
-version = "1.0.3"
+version = "1.0.4"
 description = "Information retrieval evaluation metrics in pure python with zero dependencies"
 readme = "README.md"
 license = {file = "LICENSE"}
