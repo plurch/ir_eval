@@ -1,9 +1,8 @@
 [project]
 name = "ir_evaluation"
-version = "1.0.4"
+version = "1.1.0"
 description = "Information retrieval evaluation metrics in pure python with zero dependencies"
 readme = "README.md"
-license = {file = "LICENSE"}
 authors = [
     { name = "Patrick Lurch", email = "plurch@users.noreply.github.com" }
 ]
@@ -17,10 +16,7 @@ classifiers = [
     "Natural Language :: English",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3"
 ]
 keywords = ["Information retrieval", "Evaluation metrics", "Recommender systems", "Data science"]
 dependencies = []

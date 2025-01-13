@@ -1,7 +1,9 @@
+import random
 import pytest
 from ir_evaluation.metrics import (
     recall,
     precision,
+    f1_score,
     average_precision,
     mean_average_precision,
     ndcg,
@@ -12,15 +14,24 @@ from ir_evaluation.metrics import (
 # Sample data generated with:
 # total_count_items = 100
 # total_relevant_items = 25
-# rng = np.random.default_rng()
-# actual = rng.choice(total_count_items, total_relevant_items, replace=False)
+# actual = random.sample(range(total_count_items), total_relevant_items)
 
 actual = [ 4, 79, 32, 45, 14, 46, 53, 15,  3, 54, 68, 99, 75, 82, 35, 27, 73,
-    20, 25, 66, 11, 58, 31,  8, 85]
+    20, 25, 66, 11, 58, 31, 8, 85]
 predicted = [1, 2, 62, 84, 3, 4, 81, 14, 5, 67]
 # intersection: {3, 4, 14}
 
 class TestRecall:
+  def test_recall_zero(self):
+    result = recall(actual, [5,6,7,9,10], 5)
+    assert result == pytest.approx(0.0) # 0 out of 25
+
+  def test_recall_perfect(self):
+    actual_cloned = list(actual)
+    random.shuffle(actual_cloned) # does in place shuffle
+    result = recall(actual, actual_cloned, len(actual))
+    assert result == pytest.approx(1.0) # 5 out of 5
+
   def test_recall_k_5(self):
     result = recall(actual, predicted, 5)
     assert result == pytest.approx(0.04) # 1 out of 25
@@ -30,6 +41,14 @@ class TestRecall:
     assert result == pytest.approx(0.12) # 3 out of 25
 
 class TestPrecision:
+  def test_precision_zero(self):
+    result = precision(actual, [5,6,7,9,10], 5)
+    assert result == pytest.approx(0.0) # 0 out of 25
+
+  def test_precision_k_5_perfect(self):
+    result = precision(actual, [11, 58, 31, 8, 85], 5)
+    assert result == pytest.approx(1.0) # 5 out of 5
+
   def test_precision_k_5(self):
     result = precision(actual, predicted, 5)
     assert result == pytest.approx(0.2) # 1 out of 5
@@ -37,6 +56,23 @@ class TestPrecision:
   def test_precision_k_10(self):
     result = precision(actual, predicted, 10)
     assert result == pytest.approx(0.3) # 3 out of 10
+
+class TestF1:
+  def test_f1_zero(self):
+    result = f1_score(actual, [5,6,7,9,10], 5)
+    assert result == pytest.approx(0.0)
+
+  def test_f1_perfect(self):
+    result = f1_score([8, 11, 31, 58, 85], [11, 58, 31, 8, 85], 5)
+    assert result == pytest.approx(1.0)
+
+  def test_f1_k_5(self):
+    result = f1_score(actual, predicted, 5)
+    assert result == pytest.approx(0.06666666666666667) # precision: 0.2, recall: 0.04
+  
+  def test_f1_k_10(self):
+    result = f1_score(actual, predicted, 10)
+    assert result == pytest.approx(0.17142857142857143) # precision: 0.3, recall: 0.12
 
 class TestAveragePrecision:
   def test_average_precision_basic(self):
@@ -94,7 +130,7 @@ class TestReciprocalRank:
     assert result == pytest.approx(0.2) # found at position 5
   
   def test_reciprocal_rank_zero(self):
-    result = ndcg([1,2,3], [4,5,6,7,8], 5)
+    result = reciprocal_rank([1,2,3], [4,5,6,7,8], 5)
     assert result == pytest.approx(0) # no relevant items found
 
 class TestMeanReciprocalRank:

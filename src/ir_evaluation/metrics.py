@@ -56,6 +56,31 @@ def precision(actual: list[int], predicted: list[int], k: int) -> float:
   count_relevant_in_top_k = len(actual_set.intersection(top_k_predictions))
   return count_relevant_in_top_k / float(k)
 
+def f1_score(actual: list[int], predicted: list[int], k: int) -> float:
+  """
+  Calculate the F1-score @k metric.
+
+  The F1-score is calculated as the harmonic mean of precision and recall. The formula is:
+  F1 = 2 * (Precision * Recall) / (Precision + Recall)
+
+  The F1 score provides a balanced view of a system's performance by taking into account both precision and recall. This is especially important when evaluating information retrieval systems, where finding all relevant documents is just as important as minimizing irrelevant ones.
+
+  Args:
+    actual (list[int]): An array of ground truth relevant items.
+    predicted (list[int]): An array of predicted items, ordered by relevance.
+    k (int): The number of top predictions to consider.
+
+  Returns:
+    float: The F1 score value at rank k, ranging from 0 to 1.
+           A value of 1 indicates perfect precision and recall, while 0 indicates either precision or recall is zero.
+  """
+  recall_score = recall(actual, predicted, k)
+  precision_score = precision(actual, predicted, k)
+
+  if recall_score == 0  or precision_score == 0:
+    return float(0)
+
+  return 2 * (recall_score * precision_score) / (recall_score + precision_score)
 
 def average_precision(actual: list[int], predicted: list[int], k: int) -> float:
   """

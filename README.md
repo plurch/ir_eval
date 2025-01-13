@@ -42,6 +42,7 @@ uv run pytest
 ## Metrics
 - [Recall](#recall)
 - [Precision](#precision)
+- [F1 Score](#f1-score)
 - [Average Precision (AP)](#average-precision-ap)
 - [Mean Average Precision (MAP)](#mean-average-precision-map)
 - [Normalized Discounted Cumulative Gain (nDCG)](#normalized-discounted-cumulative-gain-ndcg)
@@ -67,6 +68,16 @@ Usage scenario: Minimize false positives in predictions. Later ranking stages sh
 
 ```
 from ir_evaluation.metrics import precision
+```
+
+### F1 Score
+
+The F1-score is calculated as the harmonic mean of precision and recall. The F1-score provides a balanced view of a system's performance by taking into account both precision and recall.
+
+Usage scenario: Use when where finding all relevant documents is just as important as minimizing irrelevant ones (eg in information retrieval).
+
+```
+from ir_evaluation.metrics import f1_score
 ```
 
 ### Average Precision (AP)
